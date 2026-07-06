@@ -178,31 +178,37 @@ def load_demographics() -> pd.DataFrame:
     log_dataframe_shape(logger, df, "Demographics")
     return df
 def load_centiloid() -> pd.DataFrame:
-    """Load OASIS3_amyloid_centiloid.csv and standardise the subject ID.
- 
-    The centiloid file uses 'subject_id' rather than 'OASISID'.  This
-    function renames it immediately.  The returned dataframe is used only
-    for logging/validation in this script; the external-validation script
-    (05b) loads it directly from RAW_DIR.
-    """
+    """Load OASIS3_amyloid_centiloid.csv and standardise the subject ID."""
     df = _read_csv_loud("centiloid")
     assert_columns_present(df, _CENTILOID_REQUIRED)
+
     df = df.rename(columns={"subject_id": config.ID_COL})
+
+    df["pet_days"] = (
+        df["oasis_session_id"]
+          .astype(str)
+          .str.extract(r"_d(\d+)$")[0]
+          .astype(int)
+    )
+
     log_dataframe_shape(logger, df, "Centiloid")
     return df
- 
- 
+
 def load_braak() -> pd.DataFrame:
     """Load OASIS3_AV1451_braak_tauopathy.csv and standardise the subject ID.
- 
-    The Braak file uses 'OASIS_ID' rather than 'OASISID'.
+    The BRAAK file uses 'OASIS_ID' rather than 'OASISID'.
     """
     df = _read_csv_loud("braak")
     assert_columns_present(df, _BRAAK_REQUIRED)
-    df = df.rename(columns={config.BRAAK_ID_COL: config.ID_COL})
+    df = df.rename(
+        columns={
+            config.BRAAK_ID_COL: config.ID_COL,
+            "days_to_visit": "tau_days"
+        }
+    )
     log_dataframe_shape(logger, df, "Braak")
     return df
-def parse_session_days(df: pd.DataFramw)  -> pd.DataFrame:
+def parse_session_days(df: pd.DataFrame)  -> pd.DataFrame:
     """Extract integer days-from-entry from the MR_session label.
  
     Session labels follow the format 'OAS3XXXX_MR_dNNNN' where NNNN is the
@@ -299,7 +305,7 @@ def compute_derived_biomarkers(df: pd.DataFrame) -> pd.DataFrame:
     """
     df = df.copy()
     df["hippocampus_vol"] = df[config.FS_HIPPOCAMPUS_TOT_COL]
-    df["entrohinal_thickness"] = (
+    df["entorhinal_thickness"] = (
         df[config.FS_ENTORHINAL_LH_COL] + df[config.FS_ENTORHINAL_RH_COL]
     ) / 2.0
     df["precuneus_thickness"] = (
@@ -507,6 +513,56 @@ def merge_demographics(
  
     log_dataframe_shape(logger, merged, "After demographics merge")
     return merged
+def merge_nearest_pet(
+    baseline: pd.DataFrame,
+    pet_df: pd.DataFrame,
+    baseline_day_col: str,
+    pet_day_col: str,
+    tolerance_days: int,
+    gap_col_name="days_mri_to_pet",
+) -> pd.DataFrame:
+    """
+    Merge the nearest PET visit to each baseline MRI.
+    """
+
+    baseline = baseline.copy()
+    pet_df = pet_df.copy()
+
+    merged = pd.merge(
+        baseline,
+        pet_df,
+        on=config.ID_COL,
+        how="left",
+        suffixes=("", "_pet"),
+    )
+
+    merged[gap_col_name] = (
+        merged[baseline_day_col]
+        - merged[pet_day_col]
+    ).abs()
+
+    merged[gap_col_name] = (
+        merged[gap_col_name]
+        .fillna(999999)
+    )
+
+    merged = (
+        merged
+        .sort_values([config.ID_COL, gap_col_name])
+        .drop_duplicates(config.ID_COL)
+    )
+
+    far_mask = merged[gap_col_name] > tolerance_days
+
+    pet_cols = [
+        c for c in pet_df.columns
+        if c not in [config.ID_COL, pet_day_col]
+    ]
+
+    merged.loc[far_mask, pet_cols] = pd.NA
+    merged.loc[far_mask, gap_col_name] = pd.NA
+
+    return merged  
 def build_longitudinal_table(
     udsb4: pd.DataFrame,
     baseline: pd.DataFrame,
@@ -558,6 +614,10 @@ _MERGED_RAW_COLUMNS: list[str] = [
     "mri_days",
     "clinical_days_to_visit",
     "days_mri_to_clinical",
+    "pet_days",
+    "tau_days",
+    "days_mri_to_amyloid",
+    "days_mri_to_tau",
     config.FS_VERSION_COL,
     config.FS_QC_STATUS_COL,
     "age_at_baseline",
@@ -585,6 +645,11 @@ _MERGED_RAW_COLUMNS: list[str] = [
     config.POSSAD_COL,
     *config.MCI_FLAG_COLS,
     *config.NON_AD_EXCLUSION_COLS,
+    "Centiloid_fSUVR_TOT_CORTMEAN",
+    "Braak1_2",
+    "Braak3_4",
+    "Braak5_6",
+    "Tauopathy",
 ]
  
  
@@ -690,7 +755,8 @@ def save_outputs(
         "n_rows_longitudinal": len(longitudinal),
     }
     meta["upstream_files"] = upstream_paths
-    write_metadata(meta, config.MERGED_RAW_FILE)
+    metadata_path = config.INTERIM_DIR / "00_extract_merge_metadata.json"
+    write_metadata(meta, metadata_path)
  
     save_environment_snapshot(config.PACKAGE_VERSION_FILE)
     logger.info("Outputs written to %s", config.INTERIM_DIR)
@@ -721,8 +787,29 @@ def main() -> None:
  
     n_matched   = len(baseline)
     n_unmatched = n_fs_subjects - n_matched
-    baseline_with_demo = merge_demographics(baseline, demographics)
-    merged_raw = select_merged_raw_columns(baseline_with_demo)
+
+    baseline_with_demo = merge_demographics(
+        baseline, demographics
+    )
+    baseline_with_demo = merge_nearest_pet(
+        baseline_with_demo,
+        _centoloid,
+        baseline_day_col="mri_days",
+        pet_day_col="pet_days",
+        tolerance_days=180,
+        gap_col_name="days_mri_to_amyloid"
+    )
+    baseline_with_demo = merge_nearest_pet(
+        baseline_with_demo,
+        _braak,
+        baseline_day_col="mri_days",
+        pet_day_col="tau_days",
+        tolerance_days=180,
+        gap_col_name="days_mri_to_tau"
+    )
+    merged_raw = select_merged_raw_columns(
+        baseline_with_demo
+        )
     longitudinal = build_longitudinal_table(udsb4, baseline)
     validate_merged_raw(merged_raw)
     validate_longitudinal(longitudinal)

@@ -111,3 +111,34 @@ def save_environment_snapshot(output_dir: Path) -> None:
         packages_text = f"Could not run pip freeze: {exc}"
     (output_dir / "installed_packages.txt").write_text(packages_text, encoding="utf-8")
 
+import pickle
+import hashlib
+import pandas as pd
+from pathlib import Path
+
+
+def load_csv(path: Path, **kwargs) -> pd.DataFrame:
+    """Thin wrapper around pandas.read_csv."""
+    return pd.read_csv(path, **kwargs)
+
+
+def save_pickle(obj, path: Path) -> None:
+    """Save Python object to pickle."""
+    ensure_directory(path.parent)
+    with open(path, "wb") as f:
+        pickle.dump(obj, f)
+
+
+def file_fingerprint(path: Path) -> dict:
+    """Return basic file metadata and SHA256 hash."""
+    h = hashlib.sha256()
+
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(8192), b""):
+            h.update(chunk)
+
+    return {
+        "path": str(path),
+        "sha256": h.hexdigest(),
+        "size_bytes": path.stat().st_size,
+    }

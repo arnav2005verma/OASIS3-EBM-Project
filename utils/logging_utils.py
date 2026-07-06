@@ -131,3 +131,14 @@ def append_exclusion_log(
         "removed_n":       removed_n,
         "percent_removed": percent_removed,
     })
+def log_warning_file(message: str, path) -> None:
+    """
+    Append a warning message to a text file.
+    """
+    from pathlib import Path
+
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(f"{message}\n")

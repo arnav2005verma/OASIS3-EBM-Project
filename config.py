@@ -89,6 +89,7 @@ POSSAD_COL: Final[str] = "POSSAD"
 MCI_FLAG_COLS: Final[list[str]] = [
     "MCIAMEM",
     "MCIAPLUS",
+    "MCIAPLAN",
     "MCIAPATT",
     "MCIAPEX",
     "MCIAPVIS",
