@@ -36,10 +36,9 @@ logger = get_logger(__name__, log_file=config.LOGS_DIR / "02_feature_engineering
 
 EBM_MRI_PATH = config.PROCESSED_DIR / "ebm_mri_dataset.csv"
 EBM_AMYLOID_PATH = config.PROCESSED_DIR / "ebm_mri_amyloid_dataset.csv"
-EBM_TAU_PATH = config.PROCESSED_DIR / "ebm_mri_amyloid_tau_dataset.csv"
-LONGITUDINAL_PATH  = config.PROCESSED_DIR / "longitudinal_validation_dataset.csv"
-FE_SUMMARY_PATH  = config.PROCESSED_DIR / "feature_engineering_summary.csv"
-FE_METADATA_PATH  = config.PROCESSED_DIR / "feature_engineering_metadata.json"
+LONGITUDINAL_PATH = config.PROCESSED_DIR / "longitudinal_validation_dataset.csv"
+FE_SUMMARY_PATH = config.PROCESSED_DIR / "feature_engineering_summary.csv"
+FE_METADATA_PATH = config.PROCESSED_DIR / "feature_engineering_metadata.json"
 
 MRI_PRIMARY_Z_COLS: list[str] = [
     "z_hippocampus_vol",
@@ -49,12 +48,12 @@ MRI_PRIMARY_Z_COLS: list[str] = [
     "z_ventricular_vol",
 ]
 
-
 MRI_SENSITIVITY_Z_COLS: str = "z_whole_brain_vol"
 AMYLOID_Z_COL: str = "z_Centiloid_fSUVR_TOT_CORTMEAN"
-TAU_Z_COL: str = "z_Tauopathy"
-MRI_AMYLOID_Z_COLS: list[str] = MRI_PRIMARY_Z_COLS + [AMYLOID_Z_COL]
-MRI_AMYLOID_TAU_Z_COLS: list[str] = MRI_PRIMARY_Z_COLS + [AMYLOID_Z_COL, TAU_Z_COL]
+
+MRI_AMYLOID_Z_COLS: list[str] = (
+    MRI_PRIMARY_Z_COLS + [AMYLOID_Z_COL]
+)
 
 EBM_META_COLS: list[str] = [
     config.ID_COL,
@@ -76,7 +75,6 @@ EBM_META_COLS: list[str] = [
     "ventricular_vol",
     "whole_brain_vol",
     "Centiloid_fSUVR_TOT_CORTMEAN",
-    "Tauopathy",
     "icv",
     "mri_days",
 ]
@@ -98,7 +96,6 @@ LONGITUDINAL_COLS: list[str] = [
     *MRI_PRIMARY_Z_COLS,
     MRI_SENSITIVITY_Z_COLS,
     AMYLOID_Z_COL,
-    TAU_Z_COL,
 ]
 
 _MIN_EBM_NON_CN: int = config.MIN_N_FOR_EBM
@@ -352,7 +349,7 @@ def build_longitudinal_dataset(
     long_df = eligible[keep].copy()
     long_df["ebm_stage_mri"]  = np.nan
     long_df["ebm_stage_mri_amyloid"] = np.nan
-    long_df["ebm_stage_mri_tau"]  = np.nan
+    long_df[""]  = np.nan
  
     long_df = long_df.reset_index(drop=True)
  
@@ -432,7 +429,6 @@ def _missingness_row(df: pd.DataFrame, col: str, label: str) -> dict[str, Any]:
 def build_summary(
     mri_df: pd.DataFrame,
     amyloid_df: pd.DataFrame,
-    tau_df: pd.DataFrame,
     long_df: pd.DataFrame,
 ) -> pd.DataFrame:
     """Assemble a comprehensive QC summary table across all four datasets.
@@ -445,10 +441,9 @@ def build_summary(
     rows: list[dict[str, Any]] = []
 
     for label, panel in [
-        ("mri_only", mri_df),
-        ("mri_amyloid", amyloid_df),
-        ("mri_amyloid_tau", tau_df),
-        ("longitudinal", long_df),
+    ("mri_only", mri_df),
+    ("mri_amyloid", amyloid_df),
+    ("longitudinal", long_df),
     ]:
         rows.append({
             "dataset": label, "category": "sample_size",
@@ -457,10 +452,9 @@ def build_summary(
         })
     
     for label, panel in [
-        ("mri_only", mri_df),
-        ("mri_amyloid", amyloid_df),
-        ("mri_amyloid_tau", tau_df),
-        ("longitudinal", long_df),
+    ("mri_only", mri_df),
+    ("mri_amyloid", amyloid_df),
+    ("longitudinal", long_df),
     ]:
         rows.extend(_diagnosis_counts(panel, label))
     
@@ -475,15 +469,15 @@ def build_summary(
     
     rows.extend(_z_score_stats(mri_df, MRI_PRIMARY_Z_COLS, "mri_only"))
     rows.extend(_z_score_stats(amyloid_df, MRI_AMYLOID_Z_COLS, "mri_amyloid"))
-    rows.extend(_z_score_stats(tau_df, MRI_AMYLOID_TAU_Z_COLS, "mri_amyloid_tau"))
 
     all_z = list(dict.fromkeys(
-        MRI_PRIMARY_Z_COLS + [MRI_SENSITIVITY_Z_COLS] + [AMYLOID_Z_COL, TAU_Z_COL]
+    MRI_PRIMARY_Z_COLS +
+    [MRI_SENSITIVITY_Z_COLS] +
+    [AMYLOID_Z_COL]
     ))
     for label, panel in [
         ("mri_only", mri_df),
         ("mri_amyloid", amyloid_df),
-        ("mri_amyloid_tau", tau_df),
         ("longitudinal", long_df),
     ]:
         for col in all_z:
@@ -499,7 +493,6 @@ def build_summary(
 def save_outputs(
     mri_df: pd.DataFrame,
     amyloid_df: pd.DataFrame,
-    tau_df: pd.DataFrame,
     long_df: pd.DataFrame,
     summary: pd.DataFrame,
     exclusion_log: list[dict[str, Any]],
@@ -510,7 +503,7 @@ def save_outputs(
     -------------
     data/processed/ebm_mri_dataset.csv
     data/processed/ebm_mri_amyloid_dataset.csv
-    data/processed/ebm_mri_amyloid_tau_dataset.csv
+    data/processed/.csv
     data/processed/longitudinal_validation_dataset.csv
     data/processed/feature_engineering_summary.csv
     data/processed/feature_engineering_metadata.json
@@ -519,13 +512,11 @@ def save_outputs(
  
     save_csv(mri_df,     EBM_MRI_PATH)
     save_csv(amyloid_df, EBM_AMYLOID_PATH)
-    save_csv(tau_df,     EBM_TAU_PATH)
     save_csv(long_df,    LONGITUDINAL_PATH)
     save_csv(summary,    FE_SUMMARY_PATH)
  
     logger.info("Saved: %s (%d x %d)", EBM_MRI_PATH.name, *mri_df.shape)
     logger.info("Saved: %s (%d x %d)", EBM_AMYLOID_PATH.name, *amyloid_df.shape)
-    logger.info("Saved: %s (%d x %d)", EBM_TAU_PATH.name, *tau_df.shape)
     logger.info("Saved: %s (%d x %d)", LONGITUDINAL_PATH.name, *long_df.shape)
     logger.info("Saved: %s (%d x %d)", FE_SUMMARY_PATH.name, *summary.shape)
 
@@ -548,16 +539,11 @@ def save_outputs(
                 "n_subjects": len(amyloid_df),
                 "path": str(EBM_AMYLOID_PATH),
             },
-            "mri_amyloid_tau": {
-                "biomarkers": MRI_AMYLOID_TAU_Z_COLS,
-                "n_subjects": len(tau_df),
-                "path": str(EBM_TAU_PATH),
-            },
             "longitudinal": {
                 "n_subjects": len(long_df),
                 "n_adequate_followup": int(long_df["adequate_followup"].sum()),
                 "path": str(LONGITUDINAL_PATH),
-                "ebm_stage_cols": ["ebm_stage_mri", "ebm_stage_mri_amyloid", "ebm_stage_mri_tau"],
+                "ebm_stage_cols": ["ebm_stage_mri", "ebm_stage_mri_amyloid"],
                 "note": (
                     "ebm_stage_* columns are NaN placeholders; "
                     "filled by 03_ebm_staging.py"
@@ -605,29 +591,19 @@ def main() -> None:
         panel_name    = "mri_amyloid",
         exclusion_log = exclusion_log,
     )
- 
-    logger.info("--- Building MRI + Amyloid + Tau panel ---")
-    tau_df = build_ebm_panel(
-        df,
-        panel_z_cols  = MRI_AMYLOID_TAU_Z_COLS,
-        panel_name    = "mri_amyloid_tau",
-        exclusion_log = exclusion_log,
-    )
 
     logger.info("--- Building longitudinal validation dataset ---")
     long_df = build_longitudinal_dataset(df, longitudinal)
     logger.info("--- Building QC summary ---")
-    summary = build_summary(mri_df, amyloid_df, tau_df, long_df)
+    summary = build_summary(mri_df, amyloid_df, long_df)
  
-    save_outputs(mri_df, amyloid_df, tau_df, long_df, summary, exclusion_log)
+    save_outputs(mri_df, amyloid_df, long_df, summary, exclusion_log)
     logger.info("=" * 70)
     logger.info("FEATURE ENGINEERING COMPLETE")
     logger.info("  MRI-only panel:            %d subjects  (%d cols)",
                 len(mri_df), mri_df.shape[1])
     logger.info("  MRI + Amyloid panel:       %d subjects  (%d cols)",
                 len(amyloid_df), amyloid_df.shape[1])
-    logger.info("  MRI + Amyloid + Tau panel: %d subjects  (%d cols)",
-                len(tau_df), tau_df.shape[1])
     logger.info("  Longitudinal dataset:      %d subjects  (%d cols)",
                 len(long_df), long_df.shape[1])
     logger.info("=" * 70)

@@ -70,12 +70,10 @@ _SKEWED_BIOMARKERS: list[str] = [
 _HIGHER_IS_ABNORMAL: list[str] = [
     "ventricular_vol",
     "Centiloid_fSUVR_TOT_CORTMEAN",
-    "Tauopathy",
 ]
  
 _PET_BIOMARKERS: list[str] = [
     "Centiloid_fSUVR_TOT_CORTMEAN",
-    "Tauopathy",
 ]
 
 _LOWER_IS_ABNORMAL = [
@@ -631,16 +629,12 @@ def zscore_pet_biomarkers(
     cn_mask: pd.Series,
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """Z-score PET biomarkers relative to the CN PET-available reference.
- 
-    Centiloid and Tauopathy are already normalised (Centiloid to a 0/100
-    reference scale; Tauopathy as a SUVR ratio).  Only z-scoring relative
-    to the CN distribution is applied — no residualization against
-    demographics is performed.
- 
+       Centiloid values are already normalised to the Centiloid scale. Only z-scoring relative to the cognitively normal reference cohort is performed.
+    
     Both measures are HIGHER_IS_ABNORMAL: no direction flip is needed.
  
     Args:
-        df:      Baseline dataframe with Centiloid and Tauopathy columns.
+        df: Baseline dataframe with MRI biomarkers and Centiloid values.
         cn_mask: Boolean mask for the strict CN reference group.
  
     Returns:
@@ -651,7 +645,6 @@ def zscore_pet_biomarkers(
  
     for col, z_col in [
         ("Centiloid_fSUVR_TOT_CORTMEAN", "z_Centiloid_fSUVR_TOT_CORTMEAN"),
-        ("Tauopathy",                     "z_Tauopathy"),
     ]:
         if col not in df.columns:
             logger.info("PET column '%s' not in dataframe; z-score set to NaN.", col)
@@ -705,10 +698,8 @@ def build_analysis_flags(
     cn_reference_flag            int8 — 1 if in strict CN reference
     ebm_eligible                 int8 — 1 if diagnosis_group ∈ EBM_INCLUDED_DX_GROUPS
     has_amyloid_pet              int8 — 1 if Centiloid_fSUVR_TOT_CORTMEAN non-null
-    has_tau_pet                  int8 — 1 if Tauopathy non-null
     panel_mri_complete           int8 — complete data for MRI-only panel
     panel_mri_amyloid_complete   int8 — complete data for MRI + Amyloid panel
-    panel_mri_tau_complete       int8 — complete data for MRI + Amyloid + Tau panel
  
     Args:
         df:      Analysis dataframe with z-scored columns.
@@ -725,21 +716,18 @@ def build_analysis_flags(
     ).astype(int)
  
     df["has_amyloid_pet"] = df["Centiloid_fSUVR_TOT_CORTMEAN"].notna().astype(int)
-    df["has_tau_pet"]     = df["Tauopathy"].notna().astype(int)
  
     mri_z_cols     = [f"z_{b}" for b in _MRI_BIOMARKERS]
     amyloid_z_col  = "z_Centiloid_fSUVR_TOT_CORTMEAN"
-    tau_z_col      = "z_Tauopathy"
  
     df["panel_mri_complete"]           = df[mri_z_cols].notna().all(axis=1).astype(int)
     df["panel_mri_amyloid_complete"]   = df[mri_z_cols + [amyloid_z_col]].notna().all(axis=1).astype(int)
-    df["panel_mri_tau_complete"]       = df[mri_z_cols + [amyloid_z_col, tau_z_col]].notna().all(axis=1).astype(int)
  
     ebm = df[df["ebm_eligible"].eq(1)]
-    for flag in ["panel_mri_complete", "panel_mri_amyloid_complete", "panel_mri_tau_complete"]:
-        n = int(ebm[flag].sum())
-        logger.info("EBM-eligible subjects with '%s': %d", flag, n)
- 
+    logger.info(
+        "EBM-eligible subjects: %d",
+        len(ebm)
+    )
     return df
 
 def build_qc_summary(df: pd.DataFrame) -> pd.DataFrame:
@@ -767,9 +755,7 @@ def build_qc_summary(df: pd.DataFrame) -> pd.DataFrame:
     rows.append(row("EBM", "ebm_eligible", int(df["ebm_eligible"].sum())))
     rows.append(row("Follow-up", "adequate", int(df["adequate_followup"].sum())))
     rows.append(row("PET", "has_amyloid_pet", int(df["has_amyloid_pet"].sum())))
-    rows.append(row("PET", "has_tau_pet", int(df["has_tau_pet"].sum())))
- 
-    for flag in ["panel_mri_complete", "panel_mri_amyloid_complete", "panel_mri_tau_complete"]:
+    for flag in ["panel_mri_complete", "panel_mri_amyloid_complete"]:
         rows.append(row("Panel (all)",          flag, int(df[flag].sum())))
         n_ebm = int(df.loc[df["ebm_eligible"].eq(1), flag].sum())
         rows.append(row("Panel (EBM eligible)", flag, n_ebm))
@@ -949,7 +935,6 @@ def save_outputs(
         "n_cn_reference":int(df["cn_reference_flag"].sum()),
         "n_adequate_followup": int(df["adequate_followup"].sum()),
         "n_amyloid_pet": int(df["has_amyloid_pet"].sum()),
-        "n_tau_pet": int(df["has_tau_pet"].sum()),
         "mri_biomarkers": _MRI_BIOMARKERS,
         "thickness_biomarkers": _THICKNESS_BIOMARKERS,
         "volume_biomarkers": _VOLUME_BIOMARKERS,

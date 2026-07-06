@@ -83,13 +83,7 @@ _CENTILOID_REQUIRED = [
     config.CENTILOID_TRACER_COL,
     config.CENTILOID_VALUE_COL,
 ]
- 
-_BRAAK_REQUIRED = [
-    config.BRAAK_ID_COL,
-    config.BRAAK_SESSION_COL,
-    config.UDS_DAYS_COL,
-    config.TAUPATHY_COL,
-]
+
 def _read_csv_loud(key: str) -> pd.DataFrame:
     """Read a raw CSV from config.RAW_FILE_PATHS[key], raising if missing."""
     path = config.RAW_FILE_PATHS[key]
@@ -194,20 +188,6 @@ def load_centiloid() -> pd.DataFrame:
     log_dataframe_shape(logger, df, "Centiloid")
     return df
 
-def load_braak() -> pd.DataFrame:
-    """Load OASIS3_AV1451_braak_tauopathy.csv and standardise the subject ID.
-    The BRAAK file uses 'OASIS_ID' rather than 'OASISID'.
-    """
-    df = _read_csv_loud("braak")
-    assert_columns_present(df, _BRAAK_REQUIRED)
-    df = df.rename(
-        columns={
-            config.BRAAK_ID_COL: config.ID_COL,
-            "days_to_visit": "tau_days"
-        }
-    )
-    log_dataframe_shape(logger, df, "Braak")
-    return df
 def parse_session_days(df: pd.DataFrame)  -> pd.DataFrame:
     """Extract integer days-from-entry from the MR_session label.
  
@@ -615,9 +595,7 @@ _MERGED_RAW_COLUMNS: list[str] = [
     "clinical_days_to_visit",
     "days_mri_to_clinical",
     "pet_days",
-    "tau_days",
     "days_mri_to_amyloid",
-    "days_mri_to_tau",
     config.FS_VERSION_COL,
     config.FS_QC_STATUS_COL,
     "age_at_baseline",
@@ -646,10 +624,6 @@ _MERGED_RAW_COLUMNS: list[str] = [
     *config.MCI_FLAG_COLS,
     *config.NON_AD_EXCLUSION_COLS,
     "Centiloid_fSUVR_TOT_CORTMEAN",
-    "Braak1_2",
-    "Braak3_4",
-    "Braak5_6",
-    "Tauopathy",
 ]
  
  
@@ -770,7 +744,6 @@ def main() -> None:
     udsb4        = load_udsb4()
     demographics = load_demographics()
     _centoloid = load_centiloid()
-    _braak = load_braak()
     n_fs_raw = len(fs_raw)
     fs_with_days = parse_session_days(fs_raw)
     fs_filtered, _excluded_ids = apply_fs_filters(fs_with_days)
@@ -798,14 +771,6 @@ def main() -> None:
         pet_day_col="pet_days",
         tolerance_days=180,
         gap_col_name="days_mri_to_amyloid"
-    )
-    baseline_with_demo = merge_nearest_pet(
-        baseline_with_demo,
-        _braak,
-        baseline_day_col="mri_days",
-        pet_day_col="tau_days",
-        tolerance_days=180,
-        gap_col_name="days_mri_to_tau"
     )
     merged_raw = select_merged_raw_columns(
         baseline_with_demo

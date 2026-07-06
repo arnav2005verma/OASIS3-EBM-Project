@@ -36,7 +36,6 @@ RAW_FILE_PATHS: Final[dict[str, Path]] = {
     "udsb4": RAW_DIR / "OASIS3_UDSb4_cdr.csv",
     "demographics": RAW_DIR / "OASIS3_demographics.csv",
     "centiloid": RAW_DIR / "OASIS3_amyloid_centiloid.csv",
-    "braak": RAW_DIR / "OASIS3_AV1451_braak_tauopathy.csv",
 }
 FREESURFER_SUBJECT_COL: Final[str] = "Subject"
 FREESURFER_SESSION_COL: Final[str] = "MR_session"
@@ -217,9 +216,7 @@ AMYLOID_POSITIVITY_CUTOFFS: Final[dict[str, float]] = {
     "AV45": 20.6,
     "PiB": 16.4,
 }
-TAUPATHY_COL: Final[str] = "Tauopathy"
 BRAAK_SESSION_COL: Final[str] = "OASIS_session_label"
-BRAAK_ID_COL: Final[str] = "OASIS_ID"
 AMYLOID_RESULTS_FILE: Final[Path] = EXTERNAL_VALIDATION_DIR / "amyloid_stage_correlation.csv"
 TAU_RESULTS_FILE: Final[Path] = EXTERNAL_VALIDATION_DIR / "tau_stage_correlation.csv"
 APOE_STAGE_FILE: Final[Path] = EXTERNAL_VALIDATION_DIR / "apoe_by_stage_tertile.csv"
