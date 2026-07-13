@@ -26,6 +26,32 @@ In both panels, average stage rises monotonically from cognitively normal → im
 
 The MRI + amyloid panel's non-CN sample (n=80) falls below this project's own confirmatory threshold and is treated as exploratory (see `docs/cohort_size_warning.md`).
 
+## Results
+
+### Sample Characteristics
+
+The final analytic sample comprised 1,093 participants meeting eligibility criteria for the MRI-only biomarker panel (880 cognitively normal, 213 classified as cognitively impaired or demented) and 712 participants for the MRI plus amyloid panel (632 cognitively normal, 80 cognitively impaired or demented). The reduced sample size in the amyloid inclusive panel reflects the requirement of a complete amyloid PET measurement, which was unavailable for a subset of participants. Cohort characteristics by diagnostic group are summarized in Table 1.
+
+### Event Sequence and Model Validity
+
+The event based model identified a single maximum likelihood sequence of biomarker abnormality for each panel. In the MRI-only panel, the estimated sequence was ventricular enlargement, followed by hippocampal volume loss, entorhinal cortical thinning, fusiform volume loss, and inferior temporal volume loss. In the MRI plus amyloid panel, the estimated sequence was ventricular enlargement, fusiform volume loss, amyloid positivity, hippocampal volume loss, entorhinal cortical thinning, and inferior temporal volume loss (Figure 2).
+
+A permutation test with 5,000 iterations indicated that the observed sequence likelihood was extremely unlikely to have arisen under a null model with no true ordering, for both the MRI-only panel and the MRI plus amyloid panel, *p* < .001. Convergence diagnostics based on comparison of the modal sequence across the first and second halves of the retained MCMC samples, following a 25% burn in, indicated stable convergence for both panels. Bootstrap resampling (500 iterations) was used to generate a positional variance diagram characterizing the stability of each biomarker's position within the sequence (Figure 1).
+
+Face validity of the derived staging was assessed by correlating each participant's estimated EBM stage with an independent, clinician administered measure of dementia severity (Clinical Dementia Rating global score). Spearman correlations were positive and statistically significant for both panels, ρ = .41 for the MRI-only panel and ρ = .34 for the MRI plus amyloid panel. Mean stage increased monotonically across diagnostic groups in both panels. In the MRI-only panel, mean stage was 1.08 among cognitively normal participants, 2.26 among cognitively impaired participants, and 3.45 among participants with Alzheimer's disease dementia. In the MRI plus amyloid panel, corresponding means were 1.55, 3.33, and 4.76, respectively. These findings indicate that EBM stage, derived without reference to clinical diagnosis, recovered a biologically plausible and clinically coherent ordering of disease severity.
+
+### Longitudinal Validation of EBM Stage
+
+To evaluate whether baseline EBM stage predicted subsequent cognitive trajectories, linear mixed effects models were fit with cognitive outcome regressed on the interaction of baseline stage and time since baseline, adjusting for age, sex, and years of education, with a random slope and intercept specified for each participant. Participants with adequate longitudinal follow up were retained for this analysis (MRI-only panel, *N* = 990; MRI plus amyloid panel, *N* = 649).
+
+The stage by time interaction was statistically significant across all outcomes and panels. In the MRI-only panel, higher baseline stage was associated with a steeper annual decline in Mini-Mental State Examination score, β = -0.26, *p* < .001, and a steeper annual increase in Clinical Dementia Rating sum of boxes score, β = 0.21, *p* < .001. In the MRI plus amyloid panel, corresponding estimates were β = -0.16 for MMSE and β = 0.14 for CDR sum of boxes, both *p* < .001 (Table 4, Figure 5). These results indicate that baseline EBM stage predicted the rate, and not merely the level, of subsequent cognitive decline.
+
+### Diagnostic Conversion Analysis
+
+Logistic regression models estimated the association between EBM stage and concurrent diagnostic classification, adjusting for age, sex, and education. In the MRI-only panel, each one unit increase in stage was associated with an odds ratio of 1.95, 95% CI [1.73, 2.21], for an Alzheimer's disease diagnosis relative to cognitively normal status, and an odds ratio of 1.74, 95% CI [1.58, 1.92], for a cognitively impaired diagnosis relative to cognitively normal status. In the MRI plus amyloid panel, corresponding odds ratios were 2.22, 95% CI [1.78, 2.78], for Alzheimer's disease diagnosis, and 1.72, 95% CI [1.50, 1.98], for cognitively impaired diagnosis. All associations were statistically significant at *p* < .001.
+
+Taken together, these results demonstrate that a disease stage derived exclusively from cross sectional biomarker data, without reference to diagnostic labels during model estimation, was independently associated with both future cognitive decline and concurrent clinical diagnosis across two separately constructed biomarker panels.
+
 ## Repository structure
 
 ```
