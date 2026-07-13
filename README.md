@@ -2,6 +2,23 @@
 
 This project reconstructs the order in which brain regions become abnormal over the course of Alzheimer's disease, using an **Event-Based Model (EBM)** fit to structural MRI and amyloid-PET data from the [OASIS-3](https://www.oasis-brains.org/) cohort. Rather than sorting people into coarse clinical buckets (normal / impaired / demented), the model assigns every subject a continuous disease **stage**, derived entirely from their biomarkers — and that stage is then validated against real longitudinal cognitive decline.
 
+## Contents
+
+- [What it does](#what-it-does)
+- [Key results](#key-results)
+- [Results](#results)
+  - [Sample Characteristics](#sample-characteristics)
+  - [Event Sequence and Model Validity](#event-sequence-and-model-validity)
+  - [Longitudinal Validation of EBM Stage](#longitudinal-validation-of-ebm-stage)
+  - [Diagnostic Conversion Analysis](#diagnostic-conversion-analysis)
+- [Limitations](#limitations)
+- [Repository structure](#repository-structure)
+- [Data](#data)
+- [Running the pipeline](#running-the-pipeline)
+- [Method reference](#method-reference)
+- [Citing OASIS-3](#citing-oasis-3)
+- [License](#license)
+
 ## What it does
 
 1. Merges five raw OASIS-3 exports (FreeSurfer MRI morphometry, amyloid-PET, clinical diagnosis, cognitive testing, demographics) into one subject-level dataset.
@@ -56,6 +73,15 @@ Logistic regression models estimated the association between EBM stage and concu
 
 Taken together, these results demonstrate that a disease stage derived exclusively from cross sectional biomarker data, without reference to diagnostic labels during model estimation, was independently associated with both future cognitive decline and concurrent clinical diagnosis across two separately constructed biomarker panels.
 
+## Limitations
+
+- The MRI + amyloid panel's non-CN sample (n = 80) falls below this project's own threshold for a confirmatory EBM analysis (n = 150), so its event ordering and effect sizes should be treated as exploratory rather than confirmed (see `docs/cohort_size_warning.md`).
+- The EBM infers a group-level event sequence from a single cross-sectional snapshot per participant, not from repeated within-person imaging. It assumes the group-level order approximates each individual's disease course, an assumption that cannot be directly verified without longitudinal scans.
+- The MRI + amyloid panel required a complete amyloid PET scan, which reduced the sample from 1,093 to 712 participants (a 34.9% loss). Participants who happened to receive a PET scan may not be representative of the broader eligible population.
+- The diagnostic conversion analysis compares EBM stage to diagnosis recorded at the same visit, not to a diagnosis received afterward. It is a concurrent validity check, not a prospective conversion prediction.
+- In the MRI + amyloid panel, amyloid positivity was estimated to occur third in the biomarker sequence rather than first, in tension with the amyloid cascade hypothesis. This may reflect the nonspecific nature of ventricular enlargement and fusiform atrophy as general markers of brain aging, combined with the small non-CN sample size in that panel.
+- A tau-PET biomarker panel was piloted during development and dropped due to an insufficient non-CN sample (n = 7).
+
 ## Repository structure
 
 ```
@@ -96,6 +122,15 @@ python scripts/02_feature_engineering.py
 python scripts/03_ebm_staging.py
 python scripts/04_longitudinal_validation.py
 python scripts/05_figures.py
+```
+
+## Tests
+
+`tests/test_data_prep.py` unit tests the two pieces of pipeline logic most likely to fail silently: diagnosis derivation from raw clinical flags, and the biomarker z-score sign convention that every downstream EBM result depends on. Run with:
+
+```
+pip install -r requirements-dev.txt
+pytest tests/
 ```
 
 ## Method reference
