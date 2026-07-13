@@ -26,6 +26,10 @@ In both panels, average stage rises monotonically from cognitively normal → im
 
 The MRI + amyloid panel's non-CN sample (n=80) falls below this project's own confirmatory threshold and is treated as exploratory (see `docs/cohort_size_warning.md`).
 
+![Estimated event sequence, MRI-only panel](results/figures/fig02_event_sequence_mri_only.png)
+
+![Baseline stage predicts subsequent cognitive decline, both panels](results/figures/fig05_combined_forest_plot.png)
+
 ## Results
 
 ### Sample Characteristics
@@ -77,15 +81,10 @@ Subject-level derived outputs (per-subject stage assignments, MCMC traces, boots
 
 ## Running the pipeline
 
-Requires Python 3.11+ and:
+Requires Python 3.11+. Install dependencies with:
 
 ```
-pandas
-numpy
-scipy
-statsmodels
-matplotlib
-kde_ebm   # pip install git+https://github.com/ucl-pond/kde_ebm.git
+pip install -r requirements.txt
 ```
 
 With `data/raw/` populated, run the scripts in order:
@@ -102,3 +101,13 @@ python scripts/05_figures.py
 ## Method reference
 
 The Event-Based Model follows Fonteijn et al. (2012), *"An event-based model for disease progression and its application in familial Alzheimer's disease and Huntington's disease,"* NeuroImage, using the [`kde_ebm`](https://github.com/ucl-pond/kde_ebm) implementation from the UCL POND group.
+
+## Citing OASIS-3
+
+Any use of this pipeline against real OASIS-3 data should cite the dataset itself, per its data use agreement:
+
+> LaMontagne, P. J., Benzinger, T. L., Morris, J. C., et al. (2019). OASIS-3: Longitudinal Neuroimaging, Clinical, and Cognitive Dataset for Normal Aging and Alzheimer Disease. *medRxiv*. https://doi.org/10.1101/2019.12.13.19014902
+
+## License
+
+The code in this repository is released under the [MIT License](LICENSE). This license does not extend to OASIS-3 data itself, which remains governed by its own data use agreement.
