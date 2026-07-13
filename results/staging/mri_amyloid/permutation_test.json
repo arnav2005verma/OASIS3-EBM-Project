@@ -1,0 +1,7 @@
+{
+  "observed_loglik": -6317.789,
+  "null_mean": -6560.2236,
+  "null_sd": 13.3642,
+  "p_value": 0.0,
+  "n_permutations": 5000
+}

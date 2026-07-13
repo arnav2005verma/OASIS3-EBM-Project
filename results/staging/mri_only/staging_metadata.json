@@ -1,0 +1,94 @@
+{
+  "script_name": "03_ebm_staging.py",
+  "timestamp_utc": "2026-07-09T19:16:06.138704+00:00",
+  "python_version": "3.13.12 | packaged by Anaconda, Inc. | (main, Feb 24 2026, 16:07:20) [Clang 20.1.8 ]",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "project_version": "3.0.0",
+  "panel_name": "mri_only",
+  "n_subjects": 1093,
+  "n_biomarkers": 5,
+  "biomarker_names": [
+    "hippocampus_vol",
+    "entorhinal_thickness",
+    "fusiform_vol",
+    "inferiortemporal_vol",
+    "ventricular_vol"
+  ],
+  "random_seed": 42,
+  "n_mcmc_iter": 50000,
+  "n_bootstrap": 500,
+  "bootstrap_skipped": false,
+  "n_cn": 880,
+  "n_non_cn": 213,
+  "ml_sequence": [
+    4,
+    0,
+    1,
+    2,
+    3
+  ],
+  "ml_biomarker_order": [
+    "ventricular_vol",
+    "hippocampus_vol",
+    "entorhinal_thickness",
+    "fusiform_vol",
+    "inferiortemporal_vol"
+  ],
+  "ml_loglikelihood": -8472.7294,
+  "converged": true,
+  "permutation_result": {
+    "observed_loglik": -8472.7294,
+    "null_mean": -8852.8915,
+    "null_sd": 11.4748,
+    "p_value": 0.0,
+    "n_permutations": 5000
+  },
+  "face_validity": {
+    "spearman_rho_cdr": 0.412,
+    "spearman_p_cdr": 0.0,
+    "kruskal_h": 192.6919,
+    "kruskal_p": 0.0,
+    "mean_stage_by_dx": {
+      "CN": 1.0784,
+      "CIND": 2.2568,
+      "AD": 3.4532
+    }
+  },
+  "mixture_quality": {
+    "hippocampus_vol": {
+      "normal_mean": -0.1194,
+      "abnormal_mean": 1.4661,
+      "separation": 1.5854,
+      "warning": false
+    },
+    "entorhinal_thickness": {
+      "normal_mean": -0.0278,
+      "abnormal_mean": 1.3501,
+      "separation": 1.3779,
+      "warning": false
+    },
+    "fusiform_vol": {
+      "normal_mean": 0.0267,
+      "abnormal_mean": 1.4704,
+      "separation": 1.4438,
+      "warning": false
+    },
+    "inferiortemporal_vol": {
+      "normal_mean": 0.0382,
+      "abnormal_mean": 1.5722,
+      "separation": 1.534,
+      "warning": false
+    },
+    "ventricular_vol": {
+      "normal_mean": -0.046,
+      "abnormal_mean": 0.5602,
+      "separation": 0.6062,
+      "warning": false
+    }
+  },
+  "source_fingerprint": {
+    "path": "/Users/arnavverma/Documents/OASIS3_EBM_Project/data/processed/ebm_mri_dataset.csv",
+    "sha256": "3aabea68473ebd6d96070c6d4446e09ae6aceef14fa0486e464e04e37cdb706a",
+    "size_bytes": 279848
+  }
+}

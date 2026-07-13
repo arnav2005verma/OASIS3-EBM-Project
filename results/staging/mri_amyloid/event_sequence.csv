@@ -1,0 +1,7 @@
+position,biomarker,biomarker_col_index,positional_confidence
+1,ventricular_vol,4,0.602
+2,fusiform_vol,2,0.304
+3,Centiloid_fSUVR_TOT_CORTMEAN,5,0.542
+4,hippocampus_vol,0,0.344
+5,entorhinal_thickness,1,0.34
+6,inferiortemporal_vol,3,0.318

@@ -1,0 +1,72 @@
+{
+  "script_name": "04_longitudinal_validation.py",
+  "timestamp_utc": "2026-07-10T14:30:15.812190+00:00",
+  "python_version": "3.13.12 | packaged by Anaconda, Inc. | (main, Feb 24 2026, 16:07:20) [Clang 20.1.8 ]",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "project_version": "3.0.0",
+  "panels_validated": [
+    "mri_only",
+    "mri_amyloid"
+  ],
+  "outcomes": [
+    "MMSE",
+    "CDRSUM"
+  ],
+  "n_lme_results": 40,
+  "exclusion_log": [
+    {
+      "step": "mri_only_adequate_followup",
+      "before_n": 1093,
+      "after_n": 990,
+      "removed_n": 103,
+      "percent_removed": 9.42
+    },
+    {
+      "step": "mri_only_stage_not_null",
+      "before_n": 990,
+      "after_n": 990,
+      "removed_n": 0,
+      "percent_removed": 0.0
+    },
+    {
+      "step": "mri_only_dx_filter",
+      "before_n": 990,
+      "after_n": 990,
+      "removed_n": 0,
+      "percent_removed": 0.0
+    },
+    {
+      "step": "mri_amyloid_adequate_followup",
+      "before_n": 1093,
+      "after_n": 990,
+      "removed_n": 103,
+      "percent_removed": 9.42
+    },
+    {
+      "step": "mri_amyloid_stage_not_null",
+      "before_n": 990,
+      "after_n": 649,
+      "removed_n": 341,
+      "percent_removed": 34.44
+    },
+    {
+      "step": "mri_amyloid_dx_filter",
+      "before_n": 649,
+      "after_n": 649,
+      "removed_n": 0,
+      "percent_removed": 0.0
+    }
+  ],
+  "upstream_fingerprints": {
+    "/Users/arnavverma/Documents/OASIS3_EBM_Project/data/processed/longitudinal_validation_dataset.csv": {
+      "path": "/Users/arnavverma/Documents/OASIS3_EBM_Project/data/processed/longitudinal_validation_dataset.csv",
+      "sha256": "d9dd885a7759271a825dfa3eaf6e90a062fd3b5de5f282c944c31245e83abb5e",
+      "size_bytes": 238358
+    },
+    "/Users/arnavverma/Documents/OASIS3_EBM_Project/data/interim/longitudinal_raw.csv": {
+      "path": "/Users/arnavverma/Documents/OASIS3_EBM_Project/data/interim/longitudinal_raw.csv",
+      "sha256": "e2b3297cdda68ac2fe613d344486fabd827ef8db1eb23347257d245a789b5702",
+      "size_bytes": 348733
+    }
+  }
+}

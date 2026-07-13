@@ -1,0 +1,12 @@
+panel,sequence_position,biomarker,biomarker_col_index,positional_confidence,permutation_p,ml_loglikelihood,face_validity_rho_cdr,converged
+mri_only,1,ventricular_vol,4,0.896,0.0,-8472.7294,0.412,True
+mri_only,2,hippocampus_vol,0,0.518,0.0,-8472.7294,0.412,True
+mri_only,3,entorhinal_thickness,1,0.282,0.0,-8472.7294,0.412,True
+mri_only,4,fusiform_vol,2,0.432,0.0,-8472.7294,0.412,True
+mri_only,5,inferiortemporal_vol,3,0.394,0.0,-8472.7294,0.412,True
+mri_amyloid,1,ventricular_vol,4,0.602,0.0,-6317.789,0.343,True
+mri_amyloid,2,fusiform_vol,2,0.304,0.0,-6317.789,0.343,True
+mri_amyloid,3,Centiloid_fSUVR_TOT_CORTMEAN,5,0.542,0.0,-6317.789,0.343,True
+mri_amyloid,4,hippocampus_vol,0,0.344,0.0,-6317.789,0.343,True
+mri_amyloid,5,entorhinal_thickness,1,0.34,0.0,-6317.789,0.343,True
+mri_amyloid,6,inferiortemporal_vol,3,0.318,0.0,-6317.789,0.343,True

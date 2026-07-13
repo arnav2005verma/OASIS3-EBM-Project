@@ -1,0 +1,27 @@
+panel,analysis,outcome,n,statistic,p_value,note
+mri_only,cross_sectional,MMSE,990,ρ=-0.2864,<0.001,"95%CI [-0.3426, -0.2282]"
+mri_only,cross_sectional,CDR-SB,990,ρ=0.3953,<0.001,"95%CI [0.3414, 0.4466]"
+mri_only,cross_sectional,CDR global,990,ρ=0.3923,<0.001,"95%CI [0.3383, 0.4438]"
+mri_only,LME_interaction,MMSE,928,β=-0.258353,<0.001,"SE=0.019503, 95%CI [-0.296577, -0.220128]"
+mri_only,LME_interaction,CDRSUM,990,β=0.205366,<0.001,"SE=0.014256, 95%CI [0.177425, 0.233308]"
+mri_only,sensitivity_CN_only,MMSE,808,ρ=-0.1209,<0.001,
+mri_only,sensitivity_CN_only,CDR-SB,808,ρ=0.0816,0.020,
+mri_only,sensitivity_age_over_70,MMSE,530,ρ=-0.2931,<0.001,
+mri_only,sensitivity_age_over_70,CDR-SB,530,ρ=0.4404,<0.001,
+mri_only,sensitivity_APOE_e4_neg,MMSE,591,ρ=-0.237,<0.001,
+mri_only,sensitivity_APOE_e4_pos,MMSE,393,ρ=-0.3366,<0.001,
+mri_only,logistic_AD_vs_CN,AD_vs_CN,923,OR=1.9537,<0.001,"95%CI [1.7305, 2.2057]"
+mri_only,logistic_Impaired_vs_CN,Impaired_vs_CN,990,OR=1.7435,<0.001,"95%CI [1.5809, 1.9228]"
+mri_amyloid,cross_sectional,MMSE,649,ρ=-0.2858,<0.001,"95%CI [-0.355, -0.2136]"
+mri_amyloid,cross_sectional,CDR-SB,649,ρ=0.3195,<0.001,"95%CI [0.2487, 0.387]"
+mri_amyloid,cross_sectional,CDR global,649,ρ=0.3298,<0.001,"95%CI [0.2595, 0.3967]"
+mri_amyloid,LME_interaction,MMSE,589,β=-0.163174,<0.001,"SE=0.016114, 95%CI [-0.194758, -0.131591]"
+mri_amyloid,LME_interaction,CDRSUM,649,β=0.143215,<0.001,"SE=0.012228, 95%CI [0.119248, 0.167182]"
+mri_amyloid,sensitivity_CN_only,MMSE,574,ρ=-0.1678,<0.001,
+mri_amyloid,sensitivity_CN_only,CDR-SB,574,ρ=0.0373,0.373,
+mri_amyloid,sensitivity_age_over_70,MMSE,307,ρ=-0.3539,<0.001,
+mri_amyloid,sensitivity_age_over_70,CDR-SB,307,ρ=0.4158,<0.001,
+mri_amyloid,sensitivity_APOE_e4_neg,MMSE,410,ρ=-0.2529,<0.001,
+mri_amyloid,sensitivity_APOE_e4_pos,MMSE,235,ρ=-0.328,<0.001,
+mri_amyloid,logistic_AD_vs_CN,AD_vs_CN,612,OR=2.2221,<0.001,"95%CI [1.7772, 2.7784]"
+mri_amyloid,logistic_Impaired_vs_CN,Impaired_vs_CN,649,OR=1.7242,<0.001,"95%CI [1.4984, 1.9841]"

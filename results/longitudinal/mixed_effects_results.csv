@@ -1,0 +1,41 @@
+panel,outcome,model_type,parameter,beta,SE,t_value,ci_95_low,ci_95_high,p_value,significant,n_subjects,n_observations,formula
+mri_only,MMSE,full,Intercept,28.769474,0.754739,38.1184,27.290212,30.248736,<0.001,True,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,MMSE,full,C(sex)[T.M],-0.38309,0.131803,-2.9065,-0.64142,-0.12476,0.004,True,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,MMSE,full,stage,-0.406974,0.039912,-10.1968,-0.4852,-0.328748,<0.001,True,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,MMSE,full,years_since_baseline,-0.073157,0.038971,-1.8772,-0.149539,0.003226,0.060,False,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,MMSE,full,stage:years_since_baseline,-0.258353,0.019503,-13.247,-0.296577,-0.220128,<0.001,True,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,MMSE,full,age_at_baseline,-0.024554,0.008892,-2.7614,-0.041982,-0.007127,0.006,True,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,MMSE,full,education_years,0.160458,0.025212,6.3643,0.111043,0.209873,<0.001,True,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,MMSE,full,Group Var,1.281701,0.133307,9.6147,1.020425,1.542977,<0.001,True,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,MMSE,full,Group x years_since_baseline Cov,0.513076,0.041664,12.3145,0.431415,0.594736,<0.001,True,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,MMSE,full,years_since_baseline Var,0.367097,0.038569,9.5179,0.291503,0.442692,<0.001,True,928,4350,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,Intercept,1.029705,0.526491,1.9558,-0.002198,2.061609,0.050,False,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,C(sex)[T.M],0.155566,0.093177,1.6696,-0.027058,0.33819,0.095,False,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,stage,0.280433,0.027275,10.2816,0.226975,0.333892,<0.001,True,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,years_since_baseline,0.06342,0.029349,2.1609,0.005897,0.120942,0.031,True,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,stage:years_since_baseline,0.205366,0.014256,14.4053,0.177425,0.233308,<0.001,True,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,age_at_baseline,-0.007702,0.00614,-1.2545,-0.019736,0.004332,0.210,False,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,education_years,-0.04637,0.017728,-2.6157,-0.081116,-0.011624,0.009,True,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,Group Var,2.089721,0.169522,12.3271,1.757464,2.421978,<0.001,True,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,Group x years_since_baseline Cov,0.505831,0.058736,8.6119,0.390711,0.620951,<0.001,True,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_only,CDRSUM,full,years_since_baseline Var,0.675154,0.051815,13.0301,0.573598,0.776709,<0.001,True,990,5127,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,Intercept,27.714094,0.754079,36.7523,26.236127,29.192061,<0.001,True,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,C(sex)[T.M],-0.397846,0.129998,-3.0604,-0.652637,-0.143055,0.002,True,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,stage,-0.234034,0.034869,-6.7119,-0.302375,-0.165692,<0.001,True,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,years_since_baseline,0.034053,0.039016,0.8728,-0.042418,0.110523,0.383,False,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,stage:years_since_baseline,-0.163174,0.016114,-10.126,-0.194758,-0.131591,<0.001,True,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,age_at_baseline,-0.003842,0.009087,-0.4227,-0.021653,0.013969,0.672,False,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,education_years,0.142171,0.024883,5.7137,0.093402,0.19094,<0.001,True,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,Group Var,0.542716,0.108475,5.0032,0.33011,0.755322,<0.001,True,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,Group x years_since_baseline Cov,0.219952,0.031447,6.9944,0.158317,0.281586,<0.001,True,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,MMSE,full,years_since_baseline Var,0.212968,0.029466,7.2275,0.155214,0.270721,<0.001,True,589,2466,MMSE ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,Intercept,1.037292,0.52989,1.9576,-0.001273,2.075857,0.050,False,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,C(sex)[T.M],0.08933,0.09438,0.9465,-0.095651,0.27431,0.344,False,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,stage,0.124687,0.025009,4.9858,0.075671,0.173703,<0.001,True,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,years_since_baseline,-0.050545,0.031188,-1.6207,-0.111672,0.010582,0.105,False,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,stage:years_since_baseline,0.143215,0.012228,11.7116,0.119248,0.167182,<0.001,True,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,age_at_baseline,-0.008161,0.006252,-1.3055,-0.020414,0.004091,0.192,False,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,education_years,-0.04152,0.018268,-2.2728,-0.077325,-0.005716,0.023,True,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,Group Var,1.513949,0.179068,8.4546,1.162982,1.864916,<0.001,True,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,Group x years_since_baseline Cov,0.190013,0.055042,3.4522,0.082133,0.297892,<0.001,True,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years
+mri_amyloid,CDRSUM,full,years_since_baseline Var,0.523756,0.051115,10.2466,0.423572,0.62394,<0.001,True,649,3034,CDRSUM ~ stage * years_since_baseline + age_at_baseline + C(sex) + education_years

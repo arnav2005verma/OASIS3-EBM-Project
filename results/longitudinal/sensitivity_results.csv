@@ -1,0 +1,13 @@
+panel,sensitivity_check,outcome,n,spearman_rho,p_value
+mri_only,CN_only,MMSE,808,-0.1209,<0.001
+mri_only,CN_only,CDR-SB,808,0.0816,0.020
+mri_only,age_over_70,MMSE,530,-0.2931,<0.001
+mri_only,age_over_70,CDR-SB,530,0.4404,<0.001
+mri_only,APOE_e4_neg,MMSE,591,-0.237,<0.001
+mri_only,APOE_e4_pos,MMSE,393,-0.3366,<0.001
+mri_amyloid,CN_only,MMSE,574,-0.1678,<0.001
+mri_amyloid,CN_only,CDR-SB,574,0.0373,0.373
+mri_amyloid,age_over_70,MMSE,307,-0.3539,<0.001
+mri_amyloid,age_over_70,CDR-SB,307,0.4158,<0.001
+mri_amyloid,APOE_e4_neg,MMSE,410,-0.2529,<0.001
+mri_amyloid,APOE_e4_pos,MMSE,235,-0.328,<0.001

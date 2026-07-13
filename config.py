@@ -179,9 +179,9 @@ VOLUME_RESIDUALIZATION_FORMULA: Final[str] = (
 THICKNESS_RESIDUALIZATION_FORMULA: Final[str] = (
     "{biomarker} ~ age_at_baseline + age_sq + C(sex)"
 )
-N_MCMC_ITER: Final[int] = 10_000
-N_BOOTSTRAP: Final[int] = 50
-N_PERMUTATION: Final[int] = 1_000
+N_MCMC_ITER: Final[int] = 50_000
+N_BOOTSTRAP: Final[int] = 500
+N_PERMUTATION: Final[int] = 5_000
 EVENT_SEQUENCE_FILE: Final[Path] = STAGING_RESULTS_DIR / "event_sequence.csv"
 SUBJECT_STAGES_FILE: Final[Path] = STAGING_RESULTS_DIR / "subject_stages.csv"
 PERMUTATION_TEST_FILE: Final[Path] = STAGING_RESULTS_DIR / "permutation_test.csv"

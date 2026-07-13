@@ -1,6 +1,29 @@
+# Python
 __pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+
+# Claude Code local tool config (not part of the project)
+.claude/
+
+# OS
 .DS_Store
+
+# Logs
 logs/
 outputs/
-results/
+
+# OASIS-3 data — protected under data use agreement, never publish
 data/
+
+# Large / subject-level EBM outputs — not for public release
+results/staging/*/subject_stages.csv
+results/staging/*/mcmc_samples.npy
+results/staging/*/bootstrap_sequences.npy
+results/staging/*/pvd_matrix.npy
+results/staging/*/mixture_models.pkl
+results/longitudinal/longitudinal_validation_dataset.csv
+
+# Everything else under results/ (figures, tables, summaries) is shared.

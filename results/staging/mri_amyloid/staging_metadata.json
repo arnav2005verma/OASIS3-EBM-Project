@@ -1,0 +1,103 @@
+{
+  "script_name": "03_ebm_staging.py",
+  "timestamp_utc": "2026-07-09T20:36:19.354126+00:00",
+  "python_version": "3.13.12 | packaged by Anaconda, Inc. | (main, Feb 24 2026, 16:07:20) [Clang 20.1.8 ]",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "project_version": "3.0.0",
+  "panel_name": "mri_amyloid",
+  "n_subjects": 712,
+  "n_biomarkers": 6,
+  "biomarker_names": [
+    "hippocampus_vol",
+    "entorhinal_thickness",
+    "fusiform_vol",
+    "inferiortemporal_vol",
+    "ventricular_vol",
+    "Centiloid_fSUVR_TOT_CORTMEAN"
+  ],
+  "random_seed": 42,
+  "n_mcmc_iter": 50000,
+  "n_bootstrap": 500,
+  "bootstrap_skipped": false,
+  "n_cn": 632,
+  "n_non_cn": 80,
+  "ml_sequence": [
+    4,
+    2,
+    5,
+    0,
+    1,
+    3
+  ],
+  "ml_biomarker_order": [
+    "ventricular_vol",
+    "fusiform_vol",
+    "Centiloid_fSUVR_TOT_CORTMEAN",
+    "hippocampus_vol",
+    "entorhinal_thickness",
+    "inferiortemporal_vol"
+  ],
+  "ml_loglikelihood": -6317.789,
+  "converged": true,
+  "permutation_result": {
+    "observed_loglik": -6317.789,
+    "null_mean": -6560.2236,
+    "null_sd": 13.3642,
+    "p_value": 0.0,
+    "n_permutations": 5000
+  },
+  "face_validity": {
+    "spearman_rho_cdr": 0.343,
+    "spearman_p_cdr": 0.0,
+    "kruskal_h": 89.381,
+    "kruskal_p": 0.0,
+    "mean_stage_by_dx": {
+      "CN": 1.5475,
+      "CIND": 3.3333,
+      "AD": 4.7561
+    }
+  },
+  "mixture_quality": {
+    "hippocampus_vol": {
+      "normal_mean": -0.1687,
+      "abnormal_mean": 1.3273,
+      "separation": 1.496,
+      "warning": false
+    },
+    "entorhinal_thickness": {
+      "normal_mean": -0.0135,
+      "abnormal_mean": 1.0851,
+      "separation": 1.0986,
+      "warning": false
+    },
+    "fusiform_vol": {
+      "normal_mean": 0.0248,
+      "abnormal_mean": 0.9282,
+      "separation": 0.9035,
+      "warning": false
+    },
+    "inferiortemporal_vol": {
+      "normal_mean": -0.0104,
+      "abnormal_mean": 1.1418,
+      "separation": 1.1521,
+      "warning": false
+    },
+    "ventricular_vol": {
+      "normal_mean": -0.0308,
+      "abnormal_mean": 0.5112,
+      "separation": 0.542,
+      "warning": false
+    },
+    "Centiloid_fSUVR_TOT_CORTMEAN": {
+      "normal_mean": -0.4299,
+      "abnormal_mean": 1.5552,
+      "separation": 1.985,
+      "warning": false
+    }
+  },
+  "source_fingerprint": {
+    "path": "/Users/arnavverma/Documents/OASIS3_EBM_Project/data/processed/ebm_mri_amyloid_dataset.csv",
+    "sha256": "678852e9cefeeb2111b6726a8bf1e879ce7a24d46463eac3eae5f5310f8835b3",
+    "size_bytes": 184285
+  }
+}

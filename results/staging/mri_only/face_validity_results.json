@@ -1,0 +1,11 @@
+{
+  "spearman_rho_cdr": 0.412,
+  "spearman_p_cdr": 0.0,
+  "kruskal_h": 192.6919,
+  "kruskal_p": 0.0,
+  "mean_stage_by_dx": {
+    "CN": 1.0784,
+    "CIND": 2.2568,
+    "AD": 3.4532
+  }
+}

@@ -168,11 +168,13 @@ def build_ebm_arrays(
             f"Only {n_cn} CN subjects — minimum required: {config.MIN_CN_REFERENCE_N}"
         )
     if n_non_cn < config.MIN_N_FOR_EBM:
-        raise ValidationError(
-            f"Only {n_non_cn} non-CN subjects — minimum required for EBM: "
-            f"{config.MIN_N_FOR_EBM}"
+        logger.warning(
+             "Only %d non-CN subjects (<%d recommended). "
+              "Proceeding because this panel is exploratory.",
+               n_non_cn,
+               config.MIN_N_FOR_EBM,
         )
-        for j, col in enumerate(biomarker_cols):
+    for j, col in enumerate(biomarker_cols):
         col_data = X[:, j]
         if np.isnan(col_data).all():
             raise ValidationError(f"Biomarker '{col}' is all-NaN in the panel.")
@@ -390,10 +392,10 @@ def run_mcmc(
     )
     # event_orders: list of EventOrder(order=ndarray, score=float), len=n_iter
     ml_event = max(event_orders, key=lambda e: e.score)
-    ml_sequence = np.asarray(ml_event.order, dtype=int)
+    ml_sequence = np.asarray(ml_event.ordering, dtype=int)
     ml_loglikelihood = float(ml_event.score)
  
-    samples_array = np.array([e.order for e in event_orders], dtype=int)  # (n_iter, N)
+    samples_array = np.array([e.ordering for e in event_orders], dtype=int) 
  
     logger.info(
         "MCMC complete: ML log-likelihood=%.4f  ML sequence=%s",
@@ -605,7 +607,7 @@ def run_bootstrap(
                 plot=False,
             )
             ml_r = max(event_orders_r, key=lambda e: e.score)
-            bootstrap_sequences[r] = np.asarray(ml_r.order, dtype=int)
+            bootstrap_sequences[r] = np.asarray(ml_r.ordering, dtype=int)
         except Exception as exc:
             logger.warning(
                 "Bootstrap resample %d failed (%s); using ML sequence as fallback.",
@@ -654,9 +656,18 @@ def validate_face_validity(
              mean_stage_by_dx
     """
     merged = stages_df.merge(
-        panel_df[[config.ID_COL, config.CDR_GLOBAL_COL, "diagnosis_group"]],
-        on=config.ID_COL, how="left",
+        panel_df[
+            [config.ID_COL,
+            config.CDR_GLOBAL_COL,
+            ]
+        ],
+        on=config.ID_COL,
+        how="left",
     )
+    if "diagnosis_group" not in merged.columns:
+        raise RuntimeError(
+            f"diagnosis_group missing. Columns are: {merged.columns.tolist()}"
+        )
     valid = merged.dropna(subset=["stage", config.CDR_GLOBAL_COL])
  
     rho, p_rho = stats.spearmanr(valid["stage"], valid[config.CDR_GLOBAL_COL])

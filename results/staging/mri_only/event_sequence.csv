@@ -1,0 +1,6 @@
+position,biomarker,biomarker_col_index,positional_confidence
+1,ventricular_vol,4,0.896
+2,hippocampus_vol,0,0.518
+3,entorhinal_thickness,1,0.282
+4,fusiform_vol,2,0.432
+5,inferiortemporal_vol,3,0.394

@@ -1,0 +1,6 @@
+{
+  "n_bootstrap": 500,
+  "n_mcmc_iter": 50000,
+  "random_seed": 42,
+  "n_subjects": 1093
+}
